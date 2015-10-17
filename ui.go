@@ -39,6 +39,10 @@ type Ui interface {
 	// Warn is used for any warning messages that might appear on standard
 	// error.
 	Warn(string)
+
+	// Progress is used for any message that should override the previous
+	// message
+	Progress(string)
 }
 
 // BasicUi is an implementation of Ui that just outputs to the given
@@ -129,6 +133,11 @@ func (u *BasicUi) Warn(message string) {
 	u.Error(message)
 }
 
+func (u *BasicUi) Progress(message string) {
+	fmt.Fprint(u.Writer, message)
+	fmt.Fprint(u.Writer, "\r")
+}
+
 // PrefixedUi is an implementation of Ui that prefixes messages.
 type PrefixedUi struct {
 	AskPrefix       string
@@ -186,4 +195,12 @@ func (u *PrefixedUi) Warn(message string) {
 	}
 
 	u.Ui.Warn(message)
+}
+
+func (u *PrefixedUi) Progress(message string) {
+	if message != "" {
+		message = fmt.Sprintf("%s%s", u.OutputPrefix, message)
+	}
+
+	u.Ui.Progress(message)
 }

@@ -52,3 +52,10 @@ func (u *ConcurrentUi) Warn(message string) {
 
 	u.Ui.Warn(message)
 }
+
+func (u *ConcurrentUi) Progress(message string) {
+	u.l.Lock()
+	defer u.l.Unlock()
+
+	u.Ui.Progress(message)
+}

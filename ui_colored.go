@@ -55,6 +55,10 @@ func (u *ColoredUi) Warn(message string) {
 	u.Ui.Warn(u.colorize(message, u.WarnColor))
 }
 
+func (u *ColoredUi) Progress(message string) {
+	u.Ui.Progress(message)
+}
+
 func (u *ColoredUi) colorize(message string, color UiColor) string {
 	if color.Code == -1 {
 		return message

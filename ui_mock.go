@@ -58,6 +58,13 @@ func (u *MockUi) Warn(message string) {
 	fmt.Fprint(u.ErrorWriter, "\n")
 }
 
+func (u *MockUi) Progress(message string) {
+	u.once.Do(u.init)
+
+	fmt.Fprint(u.ErrorWriter, message)
+	fmt.Fprint(u.ErrorWriter, "\r")
+}
+
 func (u *MockUi) init() {
 	u.ErrorWriter = new(bytes.Buffer)
 	u.OutputWriter = new(bytes.Buffer)
